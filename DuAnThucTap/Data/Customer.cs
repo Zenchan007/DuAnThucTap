@@ -12,13 +12,13 @@ namespace DuAnThucTap.Data
         public int ID { get; set; }
         [Required]
         [MaxLength(100)]
-        public string Name_Customer { get; set; }
+        public string Name_Customer { get; set; } = null!;
         [Required]
-        [Range(0, 200)]
+        [Range(0, 100)]
         public int Age_Customer { get; set; }
         [Required]
         [MaxLength(500)]
-        public string Address_Customer { get;set; }
+        public string Address_Customer { get; set; } = null!;
         [AllowNull]
         [MaxLength(500)]
         public string Description_Customer { get; set; }

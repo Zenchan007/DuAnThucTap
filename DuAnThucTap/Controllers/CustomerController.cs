@@ -1,5 +1,5 @@
 ﻿using DuAnThucTap.Data;
-
+using DuAnThucTap.DTO;
 using DuAnThucTap.Models;
 using DuAnThucTap.Reponsitories;
 using Microsoft.AspNetCore.Http;
@@ -36,7 +36,7 @@ namespace DuAnThucTap.Controllers
             try
             {
                 var customer = await _icusrepo.GetCustomerByIDAsync(id);
-                return customer == null ? NotFound("Khong tim thay khach hang nay!") : Ok(customer);
+                return Ok(customer);
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -48,7 +48,7 @@ namespace DuAnThucTap.Controllers
             try
             {   
                 var newCustomer = await _icusrepo.AddCustomerAsync(model);
-                return Ok(model);
+                return Ok("Thêm mới thành công");
             }
             catch (Exception ex)
             {
@@ -57,26 +57,26 @@ namespace DuAnThucTap.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCustomerByID(int id, CustomerModel model)
+        public async Task<IActionResult> UpdateCustomerByID(int id, [FromBody]CustomerModel model)
         {
             try
             {
                 await _icusrepo.EditCustomerByIDAsync(id, model);
-                var respone = _icusrepo.GetCustomerByIDAsync(id);
-                return Ok(respone);
-            }
-            catch (Exception ex)
+                return Ok(await _icusrepo.GetCustomerByIDAsync(id));
+            }catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex.Message);                
             }
         }
+        
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCustomerByID(int id)
         {
             try
             {
                 await _icusrepo.DeleteCustomerByIDAsync(id);
-                return Ok(true);
+                return Ok("Xóa thành công");
             }
             catch (Exception ex)
             {
